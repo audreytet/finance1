@@ -8,8 +8,8 @@
     <style>
         body {
             margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f5f7fa;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #f4f7fb;
             color: #222;
             line-height: 1.6;
         }
@@ -17,13 +17,14 @@
         header {
             background: linear-gradient(to right, #0f4c75, #1b262c);
             color: white;
-            padding: 60px 20px;
+            padding: 70px 20px;
             text-align: center;
         }
 
         header h1 {
             margin: 0;
-            font-size: 42px;
+            font-size: 48px;
+            font-weight: 700;
         }
 
         header p {
@@ -33,13 +34,14 @@
 
         .resume-btn {
             display: inline-block;
-            margin-top: 20px;
-            padding: 12px 25px;
+            margin-top: 25px;
+            padding: 14px 28px;
             background: #3282b8;
             color: white;
             border-radius: 6px;
             text-decoration: none;
             font-weight: bold;
+            font-size: 16px;
         }
 
         .resume-btn:hover {
@@ -54,15 +56,24 @@
 
         h2 {
             border-left: 5px solid #0f4c75;
-            padding-left: 10px;
-            font-size: 28px;
+            padding-left: 12px;
+            font-size: 30px;
             margin-top: 50px;
+            color: #0f4c75;
+        }
+
+        .section {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin-top: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
         }
 
         .projects {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
             margin-top: 20px;
         }
 
@@ -91,9 +102,17 @@
             margin-top: 10px;
         }
 
+        ul {
+            margin-top: 10px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
         footer {
             text-align: center;
-            padding: 20px;
+            padding: 25px;
             margin-top: 40px;
             background: #1b262c;
             color: white;
@@ -118,31 +137,82 @@
     <p>Financial Analyst • Data Analytics • Actuarial Science • Business Intelligence</p>
 
     <!-- Resume Download Button -->
-    <a class="resume-btn" href="assets/Benaifa_Resume.pdf" download>
-        Download Resume
+    <a class="resume-btn" href="assets/BENAIFA_ADDO-BARTELS_Financial_Analyst_Resume.pdf" download>
+        Download Resume (PDF)
     </a>
 </header>
 
 <div class="container">
 
-    <h2>About Me</h2>
-    <p>
-        I’m a <strong>Certified Actuarial Science graduate</strong> with 
-        <strong>6+ years of experience</strong> in financial analysis, data management, 
-        and business operations. I specialize in financial modeling, forecasting, 
-        and data-driven decision-making.
-    </p>
+    <!-- PROFESSIONAL SUMMARY -->
+    <h2>Professional Summary</h2>
+    <div class="section">
+        <p>
+            Data-driven financial professional with <strong>6+ years of experience</strong> in insurance, 
+            financial analysis, and data management. Skilled in Excel modeling, financial reporting, 
+            and identifying trends that drive business decisions. Experienced in SQL, Python, and 
+            time series forecasting (ARIMA). Passionate about leveraging analytics to optimize 
+            financial performance and operational efficiency.
+        </p>
+    </div>
 
+    <!-- CORE COMPETENCIES -->
+    <h2>Core Competencies</h2>
+    <div class="section">
+        <ul>
+            <li><strong>Financial Analysis:</strong> Ledger analysis, forecasting, budgeting, variance analysis</li>
+            <li><strong>Data Analytics:</strong> Excel (VLOOKUP, Pivot Tables, COUNTIFS, INDEX-MATCH), SQL, ARIMA</li>
+            <li><strong>Tools:</strong> Excel, SQL, Google Data Analytics, TPRS, PowerPoint</li>
+            <li><strong>Soft Skills:</strong> Analytical thinking, accuracy, process optimization, collaboration</li>
+            <li><strong>Domain Expertise:</strong> Insurance, underwriting, reinsurance, premium administration</li>
+        </ul>
+    </div>
+
+    <!-- EXPERIENCE -->
+    <h2>Professional Experience</h2>
+    <div class="section">
+        <h3>Small Scale Business Operator — Sonat Ventures (2023–Present)</h3>
+        <ul>
+            <li>Managed daily sales operations including SIM registration, mobile money, and prepaid services.</li>
+            <li>Reconciled daily transactions and maintained accurate financial records.</li>
+            <li>Increased monthly revenue by <strong>25%</strong> through diversified product offerings.</li>
+            <li>Used analytics to identify customer trends and optimize product mix.</li>
+        </ul>
+
+        <h3>Junior Data Officer — Starlife Assurance (2022)</h3>
+        <ul>
+            <li>Performed advanced ledger analysis using Excel tools.</li>
+            <li>Identified and resolved <strong>$50K+</strong> in discrepancies.</li>
+            <li>Created financial reports for commissions and institutional uploads.</li>
+            <li>Improved data management protocols with cross-functional teams.</li>
+        </ul>
+
+        <h3>National Service Personnel — Starlife Assurance (2017–2018)</h3>
+        <ul>
+            <li>Maintained premium records for 500+ policies.</li>
+            <li>Processed controller increments and deletions in TPRS.</li>
+            <li>Reduced processing errors by <strong>15%</strong>.</li>
+        </ul>
+
+        <h3>Intern — Activa International Insurance (2016)</h3>
+        <ul>
+            <li>Assisted in facultative reinsurance documentation.</li>
+            <li>Organized reinsurance policies and supported team operations.</li>
+        </ul>
+    </div>
+
+    <!-- PROJECTS -->
     <h2>Featured Projects</h2>
-
     <div class="projects">
 
         <div class="card">
             <h3>Stock Price Prediction (ARIMA)</h3>
-            <p>Time series forecasting using ARIMA on Ghana Stock Exchange data.</p>
+            <p>
+                Built a time series forecasting model using ARIMA on Ghana Stock Exchange data. 
+                Demonstrated short-term predictive accuracy and compared results with traditional 
+                forecasting techniques.
+            </p>
             <a href="projects/01-stock-price-prediction.html">View Project →</a>
-
-            <!-- Dashboard Embed Placeholder -->
             <iframe src="dashboards/stock_dashboard.html"></iframe>
         </div>
 
@@ -150,7 +220,6 @@
             <h3>Insurance Premium Analysis Dashboard</h3>
             <p>Excel-based reconciliation dashboard resolving $50K+ discrepancies.</p>
             <a href="projects/02-insurance-premium-analysis.html">View Project →</a>
-
             <iframe src="dashboards/insurance_dashboard.html"></iframe>
         </div>
 
@@ -158,7 +227,6 @@
             <h3>Financial Data Cleaning Pipeline</h3>
             <p>Python ETL pipeline for cleaning and validating financial datasets.</p>
             <a href="projects/03-data-pipeline.html">View Project →</a>
-
             <iframe src="dashboards/data_pipeline_dashboard.html"></iframe>
         </div>
 
@@ -166,16 +234,26 @@
             <h3>SQL Financial Analytics</h3>
             <p>Database queries for segmentation, reporting, and financial insights.</p>
             <a href="projects/04-sql-analytics.html">View Project →</a>
-
             <iframe src="dashboards/sql_dashboard.html"></iframe>
         </div>
 
     </div>
 
+    <!-- EDUCATION -->
+    <h2>Education & Certifications</h2>
+    <div class="section">
+        <p><strong>BSc Actuarial Science</strong> — Methodist University, Ghana (2017)</p>
+        <p><strong>Google Data Analytics Certificate</strong></p>
+    </div>
+
+    <!-- CONTACT -->
     <h2>Get in Touch</h2>
-    <p>Email: <a href="mailto:benaifa95@gmail.com">benaifa95@gmail.com</a></p>
-    <p>LinkedIn: <a href="https://linkedin.com/in/benaifa-addo-bartels">linkedin.com/in/benaifa-addo-bartels</a></p>
-    <p>Location: Ghana</p>
+    <div class="section">
+        <p>Email: <a href="mailto:benaifa95@gmail.com">benaifa95@gmail.com</a></p>
+        <p>LinkedIn: <a href="https://linkedin.com/in/benaifa-addo-bartels">linkedin.com/in/benaifa-addo-bartels</a></p>
+        <p>Phone: +233 55 347 6001</p>
+        <p>Location: Ghana</p>
+    </div>
 
 </div>
 
