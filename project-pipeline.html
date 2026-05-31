@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Data Pipeline | Benaifa Portfolio</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root { --primary: #2563eb; --primary-dark: #1e40af; --secondary: #8b5cf6; --accent: #06b6d4; --dark: #0f172a; --dark-light: #1e293b; --light: #f8fafc; --text-primary: #f1f5f9; --text-secondary: #cbd5e1; --border: #334155; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #0f172a 0%, #1a1f3a 50%, #0f172a 100%); color: var(--text-primary); line-height: 1.6; }
+        nav { position: fixed; top: 0; width: 100%; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(51, 65, 85, 0.3); z-index: 1000; padding: 1rem 2rem; }
+        nav .container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+        nav .logo { font-family: 'Syne', sans-serif; font-size: 1.5rem; font-weight: 700; background: linear-gradient(135deg, #2563eb, #06b6d4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-decoration: none; cursor: pointer; }
+        nav .nav-links { display: flex; gap: 2rem; list-style: none; }
+        nav a { color: var(--text-secondary); text-decoration: none; transition: all 0.3s ease; font-size: 0.95rem; font-weight: 500; }
+        nav a:hover { color: var(--accent); transform: translateY(-2px); }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+        section { padding: 6rem 2rem; margin-top: 60px; }
+        section:first-of-type { margin-top: 80px; }
+        h1 { font-family: 'Syne', sans-serif; font-size: 3rem; font-weight: 800; margin-bottom: 1rem; background: linear-gradient(135deg, #2563eb 0%, #06b6d4 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        h2 { font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 700; margin-bottom: 2rem; color: var(--accent); }
+        h3 { font-family: 'Syne', sans-serif; font-size: 1.5rem; font-weight: 700; margin-top: 2rem; margin-bottom: 1rem; }
+        .subtitle { font-size: 1.2rem; color: var(--text-secondary); margin-bottom: 2rem; }
+        .back-link { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--accent); text-decoration: none; margin-bottom: 2rem; transition: all 0.3s ease; }
+        .back-link:hover { gap: 1rem; color: var(--primary); }
+        .project-header { background: rgba(51, 65, 85, 0.2); border: 1px solid var(--border); border-radius: 1rem; padding: 3rem; margin-bottom: 3rem; }
+        .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; margin: 2rem 0; }
+        .metric-card { background: rgba(37, 99, 235, 0.1); border: 1px solid var(--primary); padding: 2rem; border-radius: 0.75rem; text-align: center; }
+        .metric-value { font-size: 2.5rem; font-weight: 700; color: var(--accent); margin-bottom: 0.5rem; }
+        .metric-label { color: var(--text-secondary); font-size: 0.95rem; }
+        .content-section { background: rgba(51, 65, 85, 0.2); border: 1px solid var(--border); border-radius: 1rem; padding: 2.5rem; margin-bottom: 2rem; }
+        .content-section p { color: var(--text-secondary); margin-bottom: 1.5rem; line-height: 1.8; }
+        .feature-list { list-style: none; padding: 0; }
+        .feature-list li { padding: 0.75rem 0; padding-left: 2rem; position: relative; color: var(--text-secondary); }
+        .feature-list li::before { content: '✓'; position: absolute; left: 0; color: var(--accent); font-weight: bold; }
+        .code-block { background: rgba(15, 23, 42, 0.8); border: 1px solid var(--primary); border-radius: 0.5rem; padding: 1.5rem; margin: 1.5rem 0; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 0.9rem; line-height: 1.5; }
+        .btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.875rem 2rem; background: linear-gradient(135deg, #2563eb, #1e40af); color: white; text-decoration: none; border-radius: 0.5rem; font-weight: 600; transition: all 0.3s ease; margin-top: 1rem; }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 15px 40px rgba(37, 99, 235, 0.4); }
+        .btn-secondary { background: transparent; color: var(--accent); border: 2px solid var(--accent); }
+        .btn-secondary:hover { background: rgba(6, 182, 212, 0.1); }
+        .tech-stack { display: flex; flex-wrap: wrap; gap: 1rem; margin: 1.5rem 0; }
+        .tech-badge { background: rgba(37, 99, 235, 0.2); border: 1px solid var(--primary); color: var(--accent); padding: 0.5rem 1rem; border-radius: 2rem; font-size: 0.9rem; font-weight: 600; }
+        footer { background: rgba(15, 23, 42, 0.5); border-top: 1px solid var(--border); padding: 3rem 2rem; text-align: center; color: var(--text-secondary); }
+        @media (max-width: 768px) { h1 { font-size: 2rem; } h2 { font-size: 1.5rem; } section { padding: 3rem 1.5rem; } .project-header { padding: 2rem; } .metrics-grid { grid-template-columns: 1fr; } nav .nav-links { gap: 1rem; font-size: 0.85rem; } }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <a href="index.html" class="logo">Benaifa</a>
+            <ul class="nav-links">
+                <li><a href="index.html#about">About</a></li>
+                <li><a href="index.html#projects">Projects</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section>
+        <div class="container">
+            <a href="index.html#projects" class="back-link">
+                <i class="fas fa-arrow-left"></i> Back to Portfolio
+            </a>
+            
+            <h1>Financial Data Pipeline</h1>
+            <p class="subtitle">Enterprise-Grade ETL & Data Engineering</p>
+
+            <div class="project-header">
+                <h3><i class="fas fa-cogs"></i> Project Overview</h3>
+                <p>A production-ready Python data pipeline for financial data processing. This project demonstrates comprehensive data engineering practices including extraction, transformation, validation, cleaning, profiling, and export. Built with enterprise-level code quality, error handling, and logging.</p>
+                
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-value">400+</div>
+                        <div class="metric-label">Lines of Code</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">5</div>
+                        <div class="metric-label">Core Classes</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">10+</div>
+                        <div class="metric-label">Validations</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">3</div>
+                        <div class="metric-label">Export Formats</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <h2>Core Components</h2>
+            <div class="content-section">
+                <h3>DataLoader</h3>
+                <p>Handles data import from multiple sources (CSV, Excel, JSON) with error handling and progress reporting.</p>
+
+                <h3>DataValidator</h3>
+                <p>Comprehensive validation framework checking schema, nulls, duplicates, data types, value ranges, and date formats with detailed reporting.</p>
+
+                <h3>DataCleaner</h3>
+                <p>Automated data cleaning with support for missing value handling, outlier removal, duplicate detection, and type conversion.</p>
+
+                <h3>DataProfiler</h3>
+                <p>Statistical profiling with descriptive statistics, correlation analysis, and value distribution analysis.</p>
+
+                <h3>DataExporter</h3>
+                <p>Multi-format export supporting CSV, Excel, and JSON with proper encoding and formatting.</p>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <h2>Key Features</h2>
+            <div class="content-section">
+                <ul class="feature-list">
+                    <li>Object-oriented architecture with reusable classes</li>
+                    <li>Comprehensive error handling and validation</li>
+                    <li>Detailed logging and audit trail</li>
+                    <li>Type hints and documentation strings</li>
+                    <li>Support for multiple data formats (CSV, Excel, JSON)</li>
+                    <li>Automated data quality checks</li>
+                    <li>Statistical profiling and analysis</li>
+                    <li>Flexible configuration and customization</li>
+                    <li>Memory-efficient processing</li>
+                    <li>Production-ready code quality</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <h2>Technical Stack</h2>
+            <div class="content-section">
+                <div class="tech-stack">
+                    <span class="tech-badge"><i class="fab fa-python"></i> Python 3.8+</span>
+                    <span class="tech-badge"><i class="fas fa-database"></i> Pandas</span>
+                    <span class="tech-badge"><i class="fas fa-cube"></i> NumPy</span>
+                    <span class="tech-badge"><i class="fas fa-calculator"></i> SciPy</span>
+                    <span class="tech-badge"><i class="fas fa-book"></i> Logging</span>
+                    <span class="tech-badge"><i class="fas fa-check-square"></i> Type Hints</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <h2>Pipeline Workflow</h2>
+            <div class="content-section">
+                <h3>1. Data Loading</h3>
+                <p>Import data from CSV, Excel, or JSON files with automatic format detection and error handling.</p>
+
+                <h3>2. Schema Validation</h3>
+                <p>Verify required columns exist and basic structure is correct.</p>
+
+                <h3>3. Quality Assessment</h3>
+                <p>Analyze data quality including null values, duplicates, data types, and value ranges.</p>
+
+                <h3>4. Data Cleaning</h3>
+                <p>Handle missing values, remove outliers, eliminate duplicates, and standardize data types.</p>
+
+                <h3>5. Profiling</h3>
+                <p>Generate comprehensive statistical summaries and correlation analysis.</p>
+
+                <h3>6. Export</h3>
+                <p>Output cleaned data in desired format with comprehensive logging.</p>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <h2>Code Example</h2>
+            <div class="content-section">
+                <div class="code-block">
+from data_pipeline import FinancialDataPipeline<br>
+<br>
+# Create pipeline<br>
+pipeline = FinancialDataPipeline(<br>
+    input_file='raw_data.csv',<br>
+    output_dir='cleaned_data'<br>
+)<br>
+<br>
+# Run complete pipeline<br>
+cleaned_data = pipeline.run()<br>
+<br>
+# Data is now:<br>
+# ✓ Loaded and validated<br>
+# ✓ Cleaned and standardized<br>
+# ✓ Analyzed and profiled<br>
+# ✓ Exported to output formats<br>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <h2>Real-World Applications</h2>
+            <div class="content-section">
+                <ul class="feature-list">
+                    <li>Financial transaction data cleaning and preparation</li>
+                    <li>Customer account reconciliation</li>
+                    <li>Insurance premium ledger validation</li>
+                    <li>Bank statement processing</li>
+                    <li>Investment portfolio analysis preparation</li>
+                    <li>Risk assessment data pipelines</li>
+                    <li>Regulatory compliance data validation</li>
+                    <li>Data warehouse ingestion</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <h2>Best Practices Demonstrated</h2>
+            <div class="content-section">
+                <ul class="feature-list">
+                    <li><strong>Clean Code:</strong> Well-organized, documented, and maintainable code</li>
+                    <li><strong>Error Handling:</strong> Comprehensive exception handling and logging</li>
+                    <li><strong>Testing:</strong> Type hints and validation at each step</li>
+                    <li><strong>Documentation:</strong> Docstrings and usage examples</li>
+                    <li><strong>Modularity:</strong> Reusable classes and functions</li>
+                    <li><strong>Scalability:</strong> Designed to handle growing data volumes</li>
+                    <li><strong>Transparency:</strong> Detailed logging of all operations</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <h2>View Project</h2>
+            <div class="content-section">
+                <p>Explore the complete code and documentation:</p>
+                <a href="https://github.com/benaifa-portfolio/tree/main/projects/03-data-pipeline" target="_blank" class="btn">
+                    <i class="fab fa-github"></i> View on GitHub
+                </a>
+                <a href="index.html#projects" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Back to Portfolio
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Benaifa Addo-Bartels | <a href="index.html" style="color: var(--accent); text-decoration: none;">Back to Portfolio</a></p>
+        </div>
+    </footer>
+</body>
+</html>

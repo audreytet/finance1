@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insurance Premium Analysis | Benaifa Portfolio</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #2563eb; --primary-dark: #1e40af; --secondary: #8b5cf6;
+            --accent: #06b6d4; --dark: #0f172a; --dark-light: #1e293b;
+            --light: #f8fafc; --text-primary: #f1f5f9; --text-secondary: #cbd5e1;
+            --border: #334155;
+        }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #0f172a 0%, #1a1f3a 50%, #0f172a 100%);
+            color: var(--text-primary); line-height: 1.6;
+        }
+        nav {
+            position: fixed; top: 0; width: 100%; background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px); border-bottom: 1px solid rgba(51, 65, 85, 0.3);
+            z-index: 1000; padding: 1rem 2rem;
+        }
+        nav .container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+        nav .logo { font-family: 'Syne', sans-serif; font-size: 1.5rem; font-weight: 700;
+            background: linear-gradient(135deg, #2563eb, #06b6d4); -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent; background-clip: text; text-decoration: none; cursor: pointer; }
+        nav .nav-links { display: flex; gap: 2rem; list-style: none; }
+        nav a { color: var(--text-secondary); text-decoration: none; transition: all 0.3s ease;
+            font-size: 0.95rem; font-weight: 500; }
+        nav a:hover { color: var(--accent); transform: translateY(-2px); }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+        section { padding: 6rem 2rem; margin-top: 60px; }
+        section:first-of-type { margin-top: 80px; }
+        h1 { font-family: 'Syne', sans-serif; font-size: 3rem; font-weight: 800; margin-bottom: 1rem;
+            background: linear-gradient(135deg, #2563eb 0%, #06b6d4 100%); -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent; background-clip: text; }
+        h2 { font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 700; margin-bottom: 2rem; color: var(--accent); }
+        h3 { font-family: 'Syne', sans-serif; font-size: 1.5rem; font-weight: 700; margin-top: 2rem; margin-bottom: 1rem; }
+        .subtitle { font-size: 1.2rem; color: var(--text-secondary); margin-bottom: 2rem; }
+        .back-link { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--accent);
+            text-decoration: none; margin-bottom: 2rem; transition: all 0.3s ease; }
+        .back-link:hover { gap: 1rem; color: var(--primary); }
+        .project-header { background: rgba(51, 65, 85, 0.2); border: 1px solid var(--border);
+            border-radius: 1rem; padding: 3rem; margin-bottom: 3rem; }
+        .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; margin: 2rem 0; }
+        .metric-card { background: rgba(37, 99, 235, 0.1); border: 1px solid var(--primary);
+            padding: 2rem; border-radius: 0.75rem; text-align: center; }
+        .metric-value { font-size: 2.5rem; font-weight: 700; color: var(--accent); margin-bottom: 0.5rem; }
+        .metric-label { color: var(--text-secondary); font-size: 0.95rem; }
+        .content-section { background: rgba(51, 65, 85, 0.2); border: 1px solid var(--border);
+            border-radius: 1rem; padding: 2.5rem; margin-bottom: 2rem; }
+        .content-section p { color: var(--text-secondary); margin-bottom: 1.5rem; line-height: 1.8; }
+        .feature-list { list-style: none; padding: 0; }
+        .feature-list li { padding: 0.75rem 0; padding-left: 2rem; position: relative; color: var(--text-secondary); }
+        .feature-list li::before { content: '✓'; position: absolute; left: 0; color: var(--accent); font-weight: bold; }
+        .code-block { background: rgba(15, 23, 42, 0.8); border: 1px solid var(--primary);
+            border-radius: 0.5rem; padding: 1.5rem; margin: 1.5rem 0; overflow-x: auto;
+            font-family: 'Courier New', monospace; font-size: 0.9rem; line-height: 1.5; }
+        .btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.875rem 2rem;
+            background: linear-gradient(135deg, #2563eb, #1e40af); color: white; text-decoration: none;
+            border-radius: 0.5rem; font-weight: 600; transition: all 0.3s ease; margin-top: 1rem; }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 15px 40px rgba(37, 99, 235, 0.4); }
+        .btn-secondary { background: transparent; color: var(--accent); border: 2px solid var(--accent); }
+        .btn-secondary:hover { background: rgba(6, 182, 212, 0.1); }
+        .timeline { position: relative; padding: 2rem 0; }
+        .timeline-item { padding-left: 2rem; padding-bottom: 2rem; border-left: 3px solid var(--primary); position: relative; }
+        .timeline-item:last-child { border-left: 3px solid var(--accent); }
+        .timeline-item::before { content: ''; position: absolute; left: -0.6rem; top: 0;
+            width: 12px; height: 12px; background: var(--primary); border-radius: 50%; }
+        .timeline-item:last-child::before { background: var(--accent); }
+        .timeline-item h4 { color: var(--accent); margin-bottom: 0.5rem; }
+        .tech-stack { display: flex; flex-wrap: wrap; gap: 1rem; margin: 1.5rem 0; }
+        .tech-badge { background: rgba(37, 99, 235, 0.2); border: 1px solid var(--primary);
+            color: var(--accent); padding: 0.5rem 1rem; border-radius: 2rem; font-size: 0.9rem; font-weight: 600; }
+        footer { background: rgba(15, 23, 42, 0.5); border-top: 1px solid var(--border);
+            padding: 3rem 2rem; text-align: center; color: var(--text-secondary); }
+        @media (max-width: 768px) {
+            h1 { font-size: 2rem; }
+            h2 { font-size: 1.5rem; }
+            section { padding: 3rem 1.5rem; }
+            .project-header { padding: 2rem; }
+            .metrics-grid { grid-template-columns: 1fr; }
+            nav .nav-links { gap: 1rem; font-size: 0.85rem; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <a href="index.html" class="logo">Benaifa</a>
+            <ul class="nav-links">
+                <li><a href="index.html#about">About</a></li>
+                <li><a href="index.html#projects">Projects</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section>
+        <div class="container">
+            <a href="index.html#projects" class="back-link">
+                <i class="fas fa-arrow-left"></i> Back to Portfolio
+            </a>
+            
+            <h1>Insurance Premium Analysis & Reconciliation</h1>
+            <p class="subtitle">Financial Data Reconciliation and Dashboard Development</p>
+
+            <div class="project-header">
+                <h3><i class="fas fa-file-invoice-dollar"></i> Project Overview</h3>
+                <p>This project showcases real-world financial reconciliation work performed at Starlife Assurance Company Limited. The analysis involved meticulous data verification, identification of discrepancies in premium ledgers, and development of Excel-based dashboards for premium management and reporting.</p>
+                
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-value">$50K+</div>
+                        <div class="metric-label">Discrepancies Resolved</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">25%</div>
+                        <div class="metric-label">Time Savings</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">500+</div>
+                        <div class="metric-label">Records Processed</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">99.5%</div>
+                        <div class="metric-label">Data Accuracy</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <h2>Key Achievements</h2>
+            <div class="content-section">
+                <ul class="feature-list">
+                    <li>Identified and resolved $50K+ in premium ledger discrepancies</li>
+                    <li>Reduced manual data processing time by 25% through automation</li>
+                    <li>Maintained 99.5% accuracy across 500+ policy records</li>
+                    <li>Created automated Excel dashboards for premium tracking and reconciliation</li>
+                    <li>Implemented data validation protocols to prevent future errors</li>
+                    <li>Developed commission calculation spreadsheets for accurate payment processing</li>
+                    <li>Generated comprehensive financial reports for institutional clients</li>
+                    <li>Streamlined payment collection and tracking processes</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <h2>Technical Skills Demonstrated</h2>
+            <div class="content-section">
+                <div class="tech-stack">
+                    <span class="tech-badge"><i class="fas fa-table"></i> Advanced Excel</span>
+                    <span class="tech-badge"><i class="fas fa-code"></i> VBA Macros</span>
+                    <span class="tech-badge"><i class="fas fa-chart-bar"></i> Pivot Tables</span>
+                    <span class="tech-badge"><i class="fas fa-calculator"></i> Complex Formulas</span>
+                    <span class="tech-badge"><i class="fas fa-database"></i> TPRS System</span>
+                    <span class="tech-badge"><i class="fas fa-file-alt"></i> Data Validation</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <h2>Project Details</h2>
+            <div class="content-section">
+                <h3>Context: Starlife Assurance Company Limited</h3>
+                <p>During my tenure as Junior Data Officer and National Service Personnel at Starlife Assurance, I was responsible for managing premium administration, client ledger analysis, and financial reporting. This experience provided deep insights into insurance operations and financial data management.</p>
+
+                <h3>Challenge</h3>
+                <ul class="feature-list">
+                    <li>Manage over 500 active policy records with multiple premium payments</li>
+                    <li>Identify discrepancies between recorded and paid premiums</li>
+                    <li>Process monthly commission calculations for institutional clients</li>
+                    <li>Ensure data accuracy for regulatory compliance and audits</li>
+                    <li>Generate timely reports for client and management review</li>
+                </ul>
+
+                <h3>Solution</h3>
+                <p>I developed a comprehensive Excel-based system that automated much of the manual work:</p>
+                <ul class="feature-list">
+                    <li><strong>Premium Ledger Dashboard:</strong> Real-time view of all premiums, payments, and balances</li>
+                    <li><strong>Reconciliation Tools:</strong> Automated matching of recorded vs. paid amounts</li>
+                    <li><strong>Commission Calculator:</strong> Formula-based commission computation with audit trail</li>
+                    <li><strong>Payment Tracker:</strong> Track collection status and follow-up dates</li>
+                    <li><strong>Exception Reports:</strong> Automatic flagging of unusual transactions for review</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <h2>Excel Features & Techniques</h2>
+            <div class="content-section">
+                <h3>Advanced Formulas Used</h3>
+                <div class="code-block">
+VLOOKUP - Match customer data across multiple sheets<br>
+INDEX/MATCH - Dynamic lookups with multiple criteria<br>
+SUMIFS - Conditional summation for ledger balancing<br>
+COUNTIFS - Track payment frequencies and patterns<br>
+IF/NESTED IF - Complex decision logic for payment status<br>
+PIVOT TABLES - Multi-dimensional analysis and reporting<br>
+CONDITIONAL FORMATTING - Visual anomaly detection<br>
+DATA VALIDATION - Prevent invalid data entry<br>
+                </div>
+
+                <h3>Dashboard Components</h3>
+                <ul class="feature-list">
+                    <li><strong>Summary Dashboard:</strong> High-level metrics for management review</li>
+                    <li><strong>Customer Ledger Sheet:</strong> Detailed transaction history per policy</li>
+                    <li><strong>Payment Schedule:</strong> Due dates and collection status</li>
+                    <li><strong>Commission Tracking:</strong> Calculate and track commissions earned</li>
+                    <li><strong>Exception Log:</strong> Discrepancies and anomalies requiring investigation</li>
+                    <li><strong>Audit Trail:</strong> Track all changes with timestamps and user info</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <h2>Results & Impact</h2>
+            <div class="content-section">
+                <h3>Financial Impact</h3>
+                <ul class="feature-list">
+                    <li>Recovered $50K+ in unaccounted premiums through detailed analysis</li>
+                    <li>Reduced processing errors by 15% through automated validation</li>
+                    <li>Improved cash flow tracking and collection efficiency</li>
+                    <li>Enhanced transparency in commission calculations</li>
+                </ul>
+
+                <h3>Operational Impact</h3>
+                <ul class="feature-list">
+                    <li>Reduced time per customer ledger analysis from 2 hours to 30 minutes (75% improvement)</li>
+                    <li>Decreased month-end closing time by 25%</li>
+                    <li>Eliminated manual data entry errors in premium calculations</li>
+                    <li>Improved audit compliance and documentation</li>
+                </ul>
+
+                <h3>System Capabilities</h3>
+                <ul class="feature-list">
+                    <li>Handles 500+ policy records with multiple payment transactions</li>
+                    <li>Generates reports in under 5 minutes (previously 30+ minutes manual work)</li>
+                    <li>Automatic reconciliation between ledger and TPRS system</li>
+                    <li>Scalable to accommodate growth without redesign</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <h2>Learning & Professional Growth</h2>
+            <div class="content-section">
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <h4>Financial Analysis</h4>
+                        <p>Deep understanding of insurance premium administration, ledger accounting, and financial reconciliation processes.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h4>Data Management</h4>
+                        <p>Experience managing large datasets, ensuring data quality, and implementing validation protocols.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h4>Excel Mastery</h4>
+                        <p>Advanced proficiency in Excel formulas, pivot tables, VBA macros, and dashboard design.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h4>Problem Solving</h4>
+                        <p>Identifying root causes of discrepancies and implementing systematic solutions to prevent recurrence.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h4>Documentation</h4>
+                        <p>Creating clear, professional reports and documentation for stakeholder communication.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <h2>Industry Best Practices Applied</h2>
+            <div class="content-section">
+                <ul class="feature-list">
+                    <li>Segregation of duties - Separate input, approval, and verification roles</li>
+                    <li>Audit trails - Complete documentation of all changes with timestamps</li>
+                    <li>Data validation - Constraints and checks at entry and calculation points</li>
+                    <li>Reconciliation procedures - Regular matching of internal records with external sources</li>
+                    <li>Exception handling - Automatic flagging of unusual transactions</li>
+                    <li>Security - Restricted access to sensitive financial data</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <h2>View Project Details</h2>
+            <div class="content-section">
+                <p>For detailed documentation and templates, visit the project repository:</p>
+                <a href="https://github.com/benaifa-portfolio/tree/main/projects/02-insurance-premium-analysis" target="_blank" class="btn">
+                    <i class="fab fa-github"></i> View Project on GitHub
+                </a>
+                <a href="index.html#projects" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Back to Portfolio
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Benaifa Addo-Bartels | <a href="index.html" style="color: var(--accent); text-decoration: none;">Back to Portfolio</a></p>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Price Prediction (ARIMA) | Benaifa Portfolio</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --secondary: #8b5cf6;
+            --accent: #06b6d4;
+            --dark: #0f172a;
+            --dark-light: #1e293b;
+            --light: #f8fafc;
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --border: #334155;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1a1f3a 50%, #0f172a 100%);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(51, 65, 85, 0.3);
+            z-index: 1000;
+            padding: 1rem 2rem;
+        }
+
+        nav .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav .logo {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #2563eb, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        nav .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        nav a:hover {
+            color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        section {
+            padding: 6rem 2rem;
+            margin-top: 60px;
+        }
+
+        section:first-of-type {
+            margin-top: 80px;
+        }
+
+        h1 {
+            font-family: 'Syne', sans-serif;
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #2563eb 0%, #06b6d4 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        h2 {
+            font-family: 'Syne', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: var(--accent);
+        }
+
+        h3 {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--accent);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            gap: 1rem;
+            color: var(--primary);
+        }
+
+        .project-header {
+            background: rgba(51, 65, 85, 0.2);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .metric-card {
+            background: rgba(37, 99, 235, 0.1);
+            border: 1px solid var(--primary);
+            padding: 2rem;
+            border-radius: 0.75rem;
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-label {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .content-section {
+            background: rgba(51, 65, 85, 0.2);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .content-section p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .feature-list li {
+            padding: 0.75rem 0;
+            padding-left: 2rem;
+            position: relative;
+            color: var(--text-secondary);
+        }
+
+        .feature-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        .code-block {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid var(--primary);
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.875rem 2rem;
+            background: linear-gradient(135deg, #2563eb, #1e40af);
+            color: white;
+            text-decoration: none;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(37, 99, 235, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--accent);
+            border: 2px solid var(--accent);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(6, 182, 212, 0.1);
+        }
+
+        .timeline {
+            position: relative;
+            padding: 2rem 0;
+        }
+
+        .timeline-item {
+            padding-left: 2rem;
+            padding-bottom: 2rem;
+            border-left: 3px solid var(--primary);
+            position: relative;
+        }
+
+        .timeline-item:last-child {
+            border-left: 3px solid var(--accent);
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -0.6rem;
+            top: 0;
+            width: 12px;
+            height: 12px;
+            background: var(--primary);
+            border-radius: 50%;
+        }
+
+        .timeline-item:last-child::before {
+            background: var(--accent);
+        }
+
+        .timeline-item h4 {
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .tech-badge {
+            background: rgba(37, 99, 235, 0.2);
+            border: 1px solid var(--primary);
+            color: var(--accent);
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        footer {
+            background: rgba(15, 23, 42, 0.5);
+            border-top: 1px solid var(--border);
+            padding: 3rem 2rem;
+            text-align: center;
+            color: var(--text-secondary);
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2rem; }
+            h2 { font-size: 1.5rem; }
+            section { padding: 3rem 1.5rem; }
+            .project-header { padding: 2rem; }
+            .metrics-grid { grid-template-columns: 1fr; }
+            nav .nav-links { gap: 1rem; font-size: 0.85rem; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <a href="index.html" class="logo">Benaifa</a>
+            <ul class="nav-links">
+                <li><a href="index.html#about">About</a></li>
+                <li><a href="index.html#projects">Projects</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section>
+        <div class="container">
+            <a href="index.html#projects" class="back-link">
+                <i class="fas fa-arrow-left"></i> Back to Portfolio
+            </a>
+            
+            <h1>Stock Price Prediction Using ARIMA</h1>
+            <p class="subtitle">Time Series Forecasting for Ghana Stock Exchange</p>
+
+            <div class="project-header">
+                <h3><i class="fas fa-chart-line"></i> Project Overview</h3>
+                <p>This project implements an advanced ARIMA (AutoRegressive Integrated Moving Average) model to forecast stock prices on the Ghana Stock Exchange. The analysis demonstrates statistical forecasting techniques, parameter optimization, and model validation on real financial time series data.</p>
+                
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-value">72%</div>
+                        <div class="metric-label">Directional Accuracy</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">2.3%</div>
+                        <div class="metric-label">MAPE Error</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">2.08</div>
+                        <div class="metric-label">RMSE Score</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">500+</div>
+                        <div class="metric-label">Lines of Code</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <h2>Key Features</h2>
+            <div class="content-section">
+                <ul class="feature-list">
+                    <li>Comprehensive time series analysis and visualization</li>
+                    <li>Stationarity testing using Augmented Dickey-Fuller (ADF) test</li>
+                    <li>ACF/PACF analysis for parameter identification</li>
+                    <li>Grid search optimization for (p,d,q) parameters</li>
+                    <li>Model diagnostics and residual analysis</li>
+                    <li>Forecasting with 95% confidence intervals</li>
+                    <li>Comparison against benchmark methods (Moving Average, Exponential Smoothing, Linear Regression)</li>
+                    <li>Production-quality Python code with logging and error handling</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <h2>Technical Stack</h2>
+            <div class="content-section">
+                <div class="tech-stack">
+                    <span class="tech-badge"><i class="fab fa-python"></i> Python 3.8+</span>
+                    <span class="tech-badge"><i class="fas fa-chart-line"></i> Statsmodels</span>
+                    <span class="tech-badge"><i class="fas fa-database"></i> Pandas</span>
+                    <span class="tech-badge"><i class="fas fa-cube"></i> NumPy</span>
+                    <span class="tech-badge"><i class="fas fa-paint-brush"></i> Matplotlib</span>
+                    <span class="tech-badge"><i class="fas fa-calculator"></i> SciPy</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <h2>Methodology</h2>
+            <div class="content-section">
+                <h3>1. Data Preparation & Exploration</h3>
+                <p>The analysis begins with loading Ghana Stock Exchange historical daily closing prices. Data is cleaned to handle missing values using forward-fill methods, and basic exploratory statistics are computed.</p>
+
+                <h3>2. Stationarity Testing</h3>
+                <p>The Augmented Dickey-Fuller (ADF) test is applied to determine if the time series is stationary. Non-stationary data is differenced (d=1) to achieve stationarity, which is a requirement for ARIMA modeling.</p>
+                
+                <div class="code-block">
+# ADF Test Results:<br>
+# Original Series: Non-stationary (p-value > 0.05)<br>
+# First-Differenced: Stationary (p-value < 0.05) ✓
+                </div>
+
+                <h3>3. Parameter Identification</h3>
+                <p>Autocorrelation Function (ACF) and Partial Autocorrelation Function (PACF) plots guide the selection of p and q parameters. The integration order (d) is determined from stationarity testing.</p>
+
+                <h3>4. Model Selection via Grid Search</h3>
+                <p>A grid search evaluates multiple ARIMA(p,d,q) combinations, selecting the model with the lowest AIC (Akaike Information Criterion) score. The optimal model identified was ARIMA(2,1,2).</p>
+
+                <h3>5. Model Validation</h3>
+                <p>The model is validated on a test set (20% of data) using metrics: RMSE, MAE, MAPE, and directional accuracy. The model achieved 72% directional accuracy, outperforming benchmark techniques.</p>
+
+                <h3>6. Forecasting & Confidence Intervals</h3>
+                <p>The fitted model generates future forecasts with 95% confidence intervals, providing both point estimates and uncertainty bounds for decision-making.</p>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <h2>Results & Insights</h2>
+            <div class="content-section">
+                <h3>Performance Metrics</h3>
+                <p><strong>ARIMA(2,1,2) Model Results:</strong></p>
+                <ul class="feature-list">
+                    <li>RMSE: 2.08 (Root Mean Squared Error)</li>
+                    <li>MAE: 1.65 (Mean Absolute Error)</li>
+                    <li>MAPE: 2.3% (Mean Absolute Percentage Error - excellent for forecasting)</li>
+                    <li>Directional Accuracy: 72% (Correct price direction prediction)</li>
+                </ul>
+
+                <h3>Benchmark Comparison</h3>
+                <p>The ARIMA model outperformed traditional forecasting methods:</p>
+                <ul class="feature-list">
+                    <li>Simple Moving Average: RMSE 3.45, DA 58%</li>
+                    <li>Exponential Smoothing: RMSE 2.95, DA 65%</li>
+                    <li>Linear Regression: RMSE 4.12, DA 52%</li>
+                </ul>
+
+                <h3>Key Findings</h3>
+                <ul class="feature-list">
+                    <li>GSE shows moderate upward trend with seasonal volatility</li>
+                    <li>ARIMA is most effective for 1-4 week price forecasts</li>
+                    <li>Model captures temporal dependencies in price movements</li>
+                    <li>Confidence bands widen beyond 2-week horizon, indicating increasing uncertainty</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <h2>Code Example</h2>
+            <div class="content-section">
+                <p>Here's a snippet showing the core ARIMA workflow:</p>
+                <div class="code-block">
+from statsmodels.tsa.arima.model import ARIMA<br>
+<br>
+# Fit ARIMA(2,1,2) model<br>
+model = ARIMA(timeseries, order=(2,1,2))<br>
+fitted_model = model.fit()<br>
+<br>
+# Generate forecast with confidence intervals<br>
+forecast = fitted_model.get_forecast(steps=30)<br>
+forecast_df = forecast.conf_int(alpha=0.05)<br>
+<br>
+# Calculate performance metrics<br>
+rmse = np.sqrt(mean_squared_error(test, predictions))<br>
+mape = np.mean(np.abs((test - predictions) / test)) * 100<br>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <h2>Learning Outcomes</h2>
+            <div class="content-section">
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <h4>Statistical Analysis</h4>
+                        <p>Deep understanding of time series concepts: stationarity, ACF/PACF, differencing, and statistical testing.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h4>Model Development</h4>
+                        <p>Parameter optimization techniques, model selection criteria (AIC/BIC), and proper validation methodology.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h4>Financial Knowledge</h4>
+                        <p>Application of forecasting in financial markets, understanding price movements, and risk assessment.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h4>Data Visualization</h4>
+                        <p>Creating publication-quality charts showing predictions, confidence intervals, and diagnostics.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <h2>Future Enhancements</h2>
+            <div class="content-section">
+                <ul class="feature-list">
+                    <li>Incorporate exogenous variables (interest rates, sector performance)</li>
+                    <li>Develop ARIMAX model with external regressors</li>
+                    <li>Test machine learning approaches (LSTM neural networks)</li>
+                    <li>Analyze sector-level patterns across multiple GSE stocks</li>
+                    <li>Implement ensemble forecasting methods</li>
+                    <li>Deploy as real-time prediction API</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <h2>View on GitHub</h2>
+            <div class="content-section">
+                <p>For the complete code, detailed report, and documentation, visit the project repository:</p>
+                <a href="https://github.com/benaifa-portfolio/tree/main/projects/01-stock-price-prediction" target="_blank" class="btn">
+                    <i class="fab fa-github"></i> View Full Project on GitHub
+                </a>
+                <a href="https://github.com/benaifa-portfolio/tree/main/projects/01-stock-price-prediction/blob/main/ARIMA_Analysis_Report.md" target="_blank" class="btn btn-secondary">
+                    <i class="fas fa-file-alt"></i> Read Full Technical Report
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Benaifa Addo-Bartels | <a href="index.html" style="color: var(--accent); text-decoration: none;">Back to Portfolio</a></p>
+        </div>
+    </footer>
+</body>
+</html>
